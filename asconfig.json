@@ -4,7 +4,9 @@
       "outFile": "build/debug.wasm",
       "textFile": "build/debug.wat",
       "sourceMap": true,
-      "debug": true
+      "debug": true,
+      "exportRuntime": true,
+      "initialMemory": 16
     },
     "release": {
       "outFile": "build/release.wasm",
@@ -13,7 +15,9 @@
       "optimizeLevel": 3,
       "shrinkLevel": 0,
       "converge": false,
-      "noAssert": false
+      "noAssert": false,
+      "exportRuntime": true,
+      "initialMemory": 16
     }
   },
   "options": {

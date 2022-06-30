@@ -1,10 +1,6 @@
-@external("spectest", "print")
-declare function print(s: i32): void
+@external("env", "console.log")
+declare function print(s: String): void
 
-function main(): void {
-  print(1);
-  print(2);
-  print(3);
+export function main(it: String): void {
+  print(it);
 }
-
-main();
