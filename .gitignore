@@ -1,0 +1,13 @@
+.vscode/
+package-lock.json
+node_modules/
+target/
+build/
+tmp/
+test
+
+.venv/
+
+*.wasm
+*.wat
+!input.wat

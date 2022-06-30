@@ -1,0 +1,17 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "assemblyscript": "^0.20.13"
+  },
+  "exports": {
+    ".": {
+      "import": "./build/release.js",
+      "types": "./build/release.d.ts"
+    }
+  },
+  "scripts": {
+    "asbuild:debug": "asc assembly/index.ts --target debug --initialMemory=16",
+    "asbuild:release": "asc assembly/index.ts --target release --initialMemory=16",
+    "asbuild": "npm run asbuild:debug && npm run asbuild:release"
+  }
+}
