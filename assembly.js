@@ -17,14 +17,12 @@ export async function call(value) {
 	value.message ||= "Hello";
 	var msg = msgpack.encode(value);
 	const bytes = malloc(msg.length);
-	const input = malloc(8);
 	new Uint8Array(memory.buffer).set(msg, bytes);
-	new Uint32Array(memory.buffer).set([bytes, msg.length], input/4);
-	const output = wasm.instance.exports.call(input);
+	const output = malloc(8);
+	wasm.instance.exports.call(output, bytes, msg.length);
 	var buffer = new Uint32Array(memory.buffer, output, 2).slice(0);
 	var result = msgpack.decode(new Uint8Array(memory.buffer, buffer[0], buffer[1]));
 	free(output);
-	free(input);
 	return result;
 };
 

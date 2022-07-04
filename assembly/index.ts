@@ -42,8 +42,7 @@ function encode(value: Message, writer: msgpack.Writer) : void {
   writer.writeString(value.msg!);
 }
 
-function storeMessage(value: Message): Buffer {
-  var output = new Buffer();
+function storeMessage(output: Buffer, value: Message): void {
   const sizer = new msgpack.Sizer();
   encode(value, sizer);
   var bytes = new Uint8Array(sizer.length);
@@ -53,21 +52,22 @@ function storeMessage(value: Message): Buffer {
   for (var i = 0; i < bytes.byteLength; i++) {
     store<u8>(output.data + i, bytes[i]);
   }
-  return output;
 }
 
-function greet(input: Buffer): Buffer {
+function greet(output: Buffer, input: Buffer): void {
   var value = loadMessage(input);
   var result = new Message();
   result.msg = value.msg! + " World";
-  var output = storeMessage(result);
-  return output;
+  storeMessage(output, result);
 }
 
-export function callback(fn: i32, input: Buffer): Buffer {
-  return call_indirect(fn, input);
+export function callback(output: Buffer, fn: i32, input: Buffer): void {
+  call_indirect(fn, output, input);
 }
 
-export function call(input: Buffer): Buffer {
-  return callback(greet.index, input);
+export function call(output: Buffer, data: usize, len: usize): void {
+  var input = new Buffer();
+  input.data = data;
+  input.len = len;
+  callback(output, greet.index, input);
 }
