@@ -11,7 +11,7 @@ class Buffer {
 }
 
 class Message {
-  msg: String | null;
+  msg: string | null;
 }
 
 export function malloc(size: usize): usize {
@@ -22,10 +22,10 @@ export function free(ptr: usize) : void {
   heap.free(ptr);
 }
 
-function loadMessage(ptr: usize, len: usize): Message {
-  var result = new Uint8Array(len);
-  for (var i: usize = 0; i < len; i++) {
-    result[i] = load<u8>(ptr + i);
+function loadMessage(input: Buffer): Message {
+  var result = new Uint8Array(i32(input.len));
+  for (var i = 0; i < i32(input.len); i++) {
+    result[i] = load<u8>(input.data + i);
   }
   var decoder = new msgpack.Decoder(result.buffer);
   var msg = new Message();
@@ -57,7 +57,7 @@ function storeMessage(value: Message): Buffer {
 }
 
 function greet(input: Buffer): Buffer {
-  var value = loadMessage(input.data, input.len);
+  var value = loadMessage(input);
   var result = new Message();
   result.msg = value.msg! + " World";
   var output = storeMessage(result);
