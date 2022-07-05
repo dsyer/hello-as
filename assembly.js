@@ -1,3 +1,4 @@
+import fs from "fs";
 import * as msgpack from '@msgpack/msgpack';
 
 const callback = (output, fn, input) => {
