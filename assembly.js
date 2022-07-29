@@ -2,10 +2,10 @@ import fs from "fs";
 import * as msgpack from '@msgpack/msgpack';
 
 const callback = (output, fn, input) => {
-	console.log("get:", new Uint32Array(memory.buffer, output, 6).slice(0));
-	console.log("get:", new Uint32Array(memory.buffer, input, 6).slice(0));
+	console.log("get:", new Uint32Array(memory.buffer, output, 2).slice(0));
+	console.log("get:", new Uint32Array(memory.buffer, input, 2).slice(0));
 	wasm.instance.exports.callback(output, fn, input);
-	console.log("get:", new Uint32Array(memory.buffer, output, 6).slice(0));
+	console.log("get:", new Uint32Array(memory.buffer, output, 2).slice(0));
 }
 
 const get = (output, fn, input) => {
@@ -22,11 +22,14 @@ export async function call(value) {
 	var msg = msgpack.encode(value);
 	const bytes = malloc(msg.length);
 	new Uint8Array(memory.buffer).set(msg, bytes);
-	const output = malloc(24);
-	wasm.instance.exports.call(output, bytes, msg.length);
-	var buffer = new Uint32Array(memory.buffer, output, 6).slice(0);
+	const output = malloc(8);
+	const input = malloc(8);
+	new Uint32Array(memory.buffer, input, 2).set([bytes, msg.length]);
+	wasm.instance.exports.call(output, input);
+	var buffer = new Uint32Array(memory.buffer, output, 2).slice();
 	var result = msgpack.decode(new Uint8Array(memory.buffer, buffer[0], buffer[1]));
 	free(output);
+	free(input);
 	return result;
 };
 
