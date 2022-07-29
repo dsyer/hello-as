@@ -1,22 +1,10 @@
 import * as msgpack from '@wapc/as-msgpack/assembly/index';
+import { Buffer, malloc, free } from './runtime';
 
-@unmanaged
-class Buffer {
-  constructor() {}
-  data: usize
-  len: usize
-}
+export { malloc, free };
 
 class Message {
   msg: string | null;
-}
-
-export function malloc(size: usize): usize {
-  return heap.alloc(size);
-}
-
-export function free(ptr: usize) : void {
-  heap.free(ptr);
 }
 
 function loadMessage(input: Buffer): Message {
