@@ -1,5 +1,6 @@
 import * as msgpack from '@wapc/as-msgpack/assembly/index';
 
+// @ts-ignore: decorator
 @external("env", "console.log")
 declare function print(s: i32): void
 
@@ -9,6 +10,8 @@ class Buffer {
   data: usize
   len: usize
 }
+
+
 
 class Message {
   msg: string | null;

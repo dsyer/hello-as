@@ -4,6 +4,7 @@
       "outFile": "build/debug.wasm",
       "textFile": "build/debug.wat",
       "sourceMap": true,
+      "bindings": "raw",
       "debug": true,
       "exportRuntime": true,
       "initialMemory": 16
@@ -12,6 +13,7 @@
       "outFile": "build/release.wasm",
       "textFile": "build/release.wat",
       "sourceMap": true,
+      "bindings": "raw",
       "optimizeLevel": 3,
       "shrinkLevel": 0,
       "converge": false,
