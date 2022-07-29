@@ -1,4 +1,4 @@
-import * as msgpack from '@wapc/as-msgpack/assembly/index';
+import { Decoder, Writer } from '@wapc/as-msgpack/assembly/index';
 import { Buffer, pack, unpack, callback, malloc, free } from './runtime';
 
 export { malloc, free, callback };
@@ -7,7 +7,7 @@ class Message {
   msg: string | null;
 }
 
-function decode(decoder:  msgpack.Decoder): Message {
+function decode(decoder:  Decoder): Message {
   var msg = new Message();
   decoder.readMapSize();
   decoder.readString();
@@ -16,7 +16,7 @@ function decode(decoder:  msgpack.Decoder): Message {
   return msg;
 }
 
-function encode(value: Message, writer: msgpack.Writer) : void {
+function encode(value: Message, writer: Writer) : void {
   writer.writeMapSize(1);
   writer.writeString("msg");
   writer.writeString(value.msg!);
