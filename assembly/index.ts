@@ -33,5 +33,6 @@ export function call(output: Buffer, data: usize, len: usize): void {
   var input = new Buffer();
   input.data = data;
   input.len = len;
+  // Unnecessary virtual call, just to show how it works.
   callback(output, greet.index, input);
 }
