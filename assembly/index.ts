@@ -1,17 +1,11 @@
 import * as msgpack from '@wapc/as-msgpack/assembly/index';
 
-// @ts-ignore: decorator
-@external("env", "console.log")
-declare function print(s: i32): void
-
 @unmanaged
 class Buffer {
   constructor() {}
   data: usize
   len: usize
 }
-
-
 
 class Message {
   msg: string | null;
