@@ -1,4 +1,4 @@
-import { Decoder, Writer, Buffer, Function, callback, malloc, free, Caller } from "./runtime";
+import { Decoder, Writer, Buffer, Caller, Function, callback, malloc, free } from "./runtime";
 
 export { malloc, free, callback };
 
@@ -31,6 +31,8 @@ class MessageEnhancer implements Function<Message, Message> {
 
 }
 
+const caller = new Caller<Message, Message>(new MessageEnhancer());
+
 export function call(output: Buffer, input: Buffer): void {
-  new Caller<Message, Message>(new MessageEnhancer()).call(output, input);
+  caller.call(output, input);
 }
