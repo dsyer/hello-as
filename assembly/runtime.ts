@@ -38,26 +38,17 @@ export class Caller<I, O> {
     var result = this.fun.apply(value);
     this.pack(output, result);
   }
-  private pack(
-    output: Buffer,
-    value: O
-  ): void {
+  private pack(output: Buffer, value: O): void {
     const sizer = new Sizer();
     this.fun.encode(value, sizer);
     var bytes = new Uint8Array(sizer.length);
     this.fun.encode(value, new Encoder(bytes.buffer));
-    output.data = malloc(bytes.byteLength);
+    output.data = changetype<usize>(bytes.buffer) + offsetof<Buffer>("data");
     output.len = bytes.byteLength;
-    for (var i = 0; i < bytes.byteLength; i++) {
-      store<u8>(output.data + i, bytes[i]);
-    }
   }
   private unpack(input: Buffer): I {
-    var result = new Uint8Array(i32(input.len));
-    for (var i = 0; i < i32(input.len); i++) {
-      result[i] = load<u8>(input.data + i);
-    }
-    var decoder = new Decoder(result.buffer);
+    var result = changetype<ArrayBuffer>(input.data).slice(0, i32(input.len));
+    var decoder = new Decoder(result);
     return this.fun.decode(decoder);
   }
 }
