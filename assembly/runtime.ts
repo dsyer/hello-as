@@ -41,9 +41,9 @@ export class Caller<I, O> {
   private pack(output: Buffer, value: O): void {
     const sizer = new Sizer();
     this.fun.encode(value, sizer);
-    var bytes = new Uint8Array(sizer.length);
-    this.fun.encode(value, new Encoder(bytes.buffer));
-    output.data = changetype<usize>(bytes.buffer) + offsetof<Buffer>("data");
+    var bytes = new Uint8Array(sizer.length).buffer;
+    this.fun.encode(value, new Encoder(bytes));
+    output.data = changetype<usize>(bytes) + offsetof<Buffer>("data");
     output.len = bytes.byteLength;
   }
   private unpack(input: Buffer): I {
