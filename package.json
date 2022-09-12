@@ -1,11 +1,12 @@
 {
   "type": "module",
-	"dependencies": {
-		"@msgpack/msgpack": "^2.7.2"
-	},
+  "dependencies": {
+    "@msgpack/msgpack": "^2.7.2"
+  },
   "devDependencies": {
+    "@wapc/as-msgpack": "^0.1.13",
     "assemblyscript": "^0.20.13",
-    "@wapc/as-msgpack": "^0.1.13"
+    "ts-proto": "^1.125.0"
   },
   "exports": {
     ".": {
@@ -14,7 +15,7 @@
     }
   },
   "scripts": {
-		"test": "node tests",
+    "test": "node tests",
     "asbuild:debug": "asc assembly/index.ts --target debug",
     "asbuild:release": "asc assembly/index.ts --target release",
     "asbuild": "npm run asbuild:debug && npm run asbuild:release"

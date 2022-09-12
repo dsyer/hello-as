@@ -3,7 +3,7 @@ mkShell {
 
   name = "env";
   buildInputs = [
-    nodejs cmake check wasmtime wabt
+    nodejs cmake check wasmtime wabt protobuf protobufc
   ];
 
   shellHook = ''
