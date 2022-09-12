@@ -1,6 +1,11 @@
-with import <nixpkgs> { };
-
-mkShell {
+with import <nixpkgs> {
+  overlays = [
+    (self: super: {
+      # https://github.com/NixOS/nixpkgs/pull/188162
+      binaryen = super.binaryen.override { nodejs = super.nodejs-14_x; };
+    })
+  ];
+}; mkShell {
 
   name = "env";
   buildInputs = [
