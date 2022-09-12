@@ -1,23 +1,13 @@
-with import <nixpkgs> {
-  overlays = [
-    (self: super: {
-      # https://github.com/NixOS/nixpkgs/pull/188162
-      binaryen = super.binaryen.override { nodejs = super.nodejs-14_x; };
-    })
-  ];
-}; mkShell {
+with import <nixpkgs> {};
+mkShell {
 
   name = "env";
   buildInputs = [
-    figlet emscripten nodejs cmake check wasmtime wabt binaryen
+    nodejs cmake check wasmtime wabt
   ];
 
   shellHook = ''
-    mkdir -p ~/.emscripten
-    chmod +w -R ~/.emscripten
-    cp -rf ${emscripten}/share/emscripten/cache ~/.emscripten
-    export EM_CACHE=~/.emscripten/cache
-    figlet -- '-:hello-as:-'
+    echo '-:hello-as:-'
   '';
 
 }
