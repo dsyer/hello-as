@@ -29,25 +29,19 @@ export async function call(value) {
 	for (var key in value.headers) {
 		msg.getHeadersMap().set(key, value.headers[key]);
 	}
-	console.log(msg)
 	var encoded = msg.serializeBinary();
 	const bytes = malloc(encoded.length);
 	new Uint8Array(memory.buffer).set(encoded, bytes);
-	console.log(memory.buffer.slice(bytes))
 	const output = malloc(8);
 	const input = malloc(8);
-	new Uint32Array(memory.buffer, input, 2).set([bytes, msg.length]);
+	new Uint32Array(memory.buffer, input, 2).set([bytes, encoded.length]);
 	wasm.instance.exports.call(output, input);
-	console.log("********", output, memory.buffer.slice(output));
 	var buffer = new Uint32Array(memory.buffer, output, 2).slice();
-	console.log("********", buffer);
 	var result = message.SpringMessage.deserializeBinary(new Uint8Array(memory.buffer, buffer[0], buffer[1]));
-	console.log(result)
 	free(output);
 	free(input);
 	var converted = {payload: new TextDecoder().decode(result.getPayload())};
 	result.getHeadersMap().forEach((v,k) => {
-		console.log(k, v);
 		converted.headers ||= {};
 		converted.headers[k] = v;
 	});

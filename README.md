@@ -2,8 +2,8 @@
 $ npm run asbuild
 $ node
 > var is = await import("./assembly.js")
-> await is.call({"message":"Hello"})
-{ msg: 'Hello World' }
+> await is.call({"payload":"Hello"})
+{ payload: 'Hello', headers: { one: 'two' } }
 ```
 
 To explore the memory allocation:

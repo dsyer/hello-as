@@ -59,24 +59,28 @@ export class SpringMessage {
 
 export namespace SpringMessage {
   export class HeadersEntry {
-    key: string = "";
-    value: string = "";
+    key: string;
+    value: string;
     static decode(reader: Reader, length: i32): HeadersEntry {
-      const end: usize = length < 0 ? reader.end : reader.ptr + length;
-      const entry = new HeadersEntry();
-  
-      while (reader.ptr < end) {
-        const tag = reader.uint32();
-        entry.key = reader.string();
-        entry.value = reader.string();
-      }
-  
+      const entry = new HeadersEntry("", "");
+      reader.uint32();
+      entry.key = reader.string();
+      reader.uint32();
+      entry.value = reader.string();
       return entry;
     }
     static encode(entry: HeadersEntry, writer: Writer): void {
       writer.uint32(10);
       writer.string(entry.key);
+      writer.uint32(18);
       writer.string(entry.value);
+    }
+    constructor(
+      key: string,
+      value: string
+    ) {
+      this.key = key;
+      this.value = value;
     }
   }
 }
