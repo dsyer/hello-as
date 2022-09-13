@@ -4,9 +4,9 @@ wasm := message.wasm
 
 ALL: $(wasm) 
 
-assembly/message.ts: message.proto
+assembly/message.ts: proto/message.proto
 	mkdir -p $(build)/protoc
-	protoc --proto_path=proto --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=$(build)/protoc message.proto
+	protoc --proto_path=proto --plugin=protoc-gen-as=./node_modules/.bin/as-proto-gen --as_out=$(build)/protoc message.proto
 #	cp $(build)/protoc/* assembly
 
 $(wasm): assembly/message.ts

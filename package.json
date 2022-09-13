@@ -5,8 +5,9 @@
   },
   "devDependencies": {
     "@wapc/as-msgpack": "^0.1.13",
-    "assemblyscript": "^0.20.13",
-    "ts-proto": "^1.125.0"
+    "as-proto": "^0.4.0",
+    "as-proto-gen": "^0.4.0",
+    "assemblyscript": "^0.20.13"
   },
   "exports": {
     ".": {
