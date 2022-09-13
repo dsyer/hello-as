@@ -1,4 +1,5 @@
 import { Decoder, Writer, Buffer, Caller, Function, callback, malloc, free } from "./runtime";
+import { SpringMessage } from "./message";
 
 export { malloc, free, callback };
 
@@ -35,4 +36,10 @@ const caller = new Caller<Message, Message>(new MessageEnhancer());
 
 export function call(output: Buffer, input: Buffer): void {
   caller.call(output, input);
+}
+
+export function reflect(output: Buffer, input: Buffer): void {
+  var buffer = changetype<ArrayBuffer>(input.data).slice(0, i32(input.len));
+  var array = new Uint8Array(buffer);
+  SpringMessage.decode(array, input.len);
 }
