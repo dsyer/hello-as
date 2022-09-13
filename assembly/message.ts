@@ -3,7 +3,7 @@
 //   protoc-gen-as v0.4.0
 //   protoc        v3.19.4
 
-import { Writer, Reader } from "as-proto";
+import { Writer, Reader } from "as-proto/assembly/index";
 
 export class SpringMessage {
   static encode(message: SpringMessage, writer: Writer): void {
@@ -57,4 +57,26 @@ export class SpringMessage {
   }
 }
 
-export namespace SpringMessage {}
+export namespace SpringMessage {
+  export class HeadersEntry {
+    key: string = "";
+    value: string = "";
+    static decode(reader: Reader, length: i32): HeadersEntry {
+      const end: usize = length < 0 ? reader.end : reader.ptr + length;
+      const entry = new HeadersEntry();
+  
+      while (reader.ptr < end) {
+        const tag = reader.uint32();
+        entry.key = reader.string();
+        entry.value = reader.string();
+      }
+  
+      return entry;
+    }
+    static encode(entry: HeadersEntry, writer: Writer): void {
+      writer.uint32(10);
+      writer.string(entry.key);
+      writer.string(entry.value);
+    }
+  }
+}

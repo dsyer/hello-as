@@ -1,45 +1,14 @@
-import { Decoder, Writer, Buffer, Caller, Function, callback, malloc, free } from "./runtime";
+import { Buffer, callback, malloc, free } from "./runtime";
 import { SpringMessage } from "./message";
+import { Reader, Writer, Protobuf } from "as-proto/assembly/index";
 
 export { malloc, free, callback };
 
-class Message {
-  msg: string | null;
-}
-
-class MessageEnhancer implements Function<Message, Message> {
-
-  decode(decoder: Decoder): Message {
-    var msg = new Message();
-    decoder.readMapSize();
-    decoder.readString();
-    var value = decoder.readString();
-    msg.msg = value;
-    return msg;
-  }
-
-  encode(value: Message, writer: Writer): void {
-    writer.writeMapSize(1);
-    writer.writeString("msg");
-    writer.writeString(value.msg!);
-  }
-
-  apply(value: Message): Message {
-    var result = new Message();
-    result.msg = value.msg! + " World";
-    return result;
-  }
-
-}
-
-const caller = new Caller<Message, Message>(new MessageEnhancer());
-
 export function call(output: Buffer, input: Buffer): void {
-  caller.call(output, input);
-}
-
-export function reflect(output: Buffer, input: Buffer): void {
   var buffer = changetype<ArrayBuffer>(input.data).slice(0, i32(input.len));
-  var array = new Uint8Array(buffer);
-  SpringMessage.decode(array, input.len);
+  var array : Uint8Array = Uint8Array.wrap(buffer);
+  var message : SpringMessage = Protobuf.decode<SpringMessage>(array, (reader: Reader, len: i32) => SpringMessage.decode(reader, len));
+  var result : Uint8Array = Protobuf.encode(message, (msg: SpringMessage, writer: Writer) => SpringMessage.encode(msg, writer));
+  output.data = changetype<usize>(result.buffer);
+  output.len = result.byteLength;
 }

@@ -1,5 +1,6 @@
 import fs from "fs";
-import * as msgpack from '@msgpack/msgpack';
+await import('module').then(module => globalThis.require = module.createRequire(import.meta.url));
+var message = require('./proto/message_pb.cjs');
 
 const callback = (output, fn, input) => {
 	console.log("get:", new Uint32Array(memory.buffer, output, 2).slice(0));
@@ -18,19 +19,39 @@ let { malloc, free, memory } = wasm.instance.exports;
 
 export async function call(value) {
 	value ||= {}
-	value.message ||= "Hello";
-	var msg = msgpack.encode(value);
-	const bytes = malloc(msg.length);
-	new Uint8Array(memory.buffer).set(msg, bytes);
+	value.payload ||= "Hello";
+	value.headers ||= {};
+	if (typeof(value.payload) === "string") {
+		value.payload = new TextEncoder().encode(value.payload);
+	}
+	var msg = new message.SpringMessage();
+	msg.setPayload(value.payload);
+	for (var key in value.headers) {
+		msg.getHeadersMap().set(key, value.headers[key]);
+	}
+	console.log(msg)
+	var encoded = msg.serializeBinary();
+	const bytes = malloc(encoded.length);
+	new Uint8Array(memory.buffer).set(encoded, bytes);
+	console.log(memory.buffer.slice(bytes))
 	const output = malloc(8);
 	const input = malloc(8);
 	new Uint32Array(memory.buffer, input, 2).set([bytes, msg.length]);
 	wasm.instance.exports.call(output, input);
+	console.log("********", output, memory.buffer.slice(output));
 	var buffer = new Uint32Array(memory.buffer, output, 2).slice();
-	var result = msgpack.decode(new Uint8Array(memory.buffer, buffer[0], buffer[1]));
+	console.log("********", buffer);
+	var result = message.SpringMessage.deserializeBinary(new Uint8Array(memory.buffer, buffer[0], buffer[1]));
+	console.log(result)
 	free(output);
 	free(input);
-	return result;
+	var converted = {payload: new TextDecoder().decode(result.getPayload())};
+	result.getHeadersMap().forEach((v,k) => {
+		console.log(k, v);
+		converted.headers ||= {};
+		converted.headers[k] = v;
+	});
+	return converted;
 };
 
 export { wasm };
