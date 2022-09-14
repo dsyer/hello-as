@@ -1,5 +1,6 @@
 import fs from "fs";
-await import('module').then(module => globalThis.require = module.createRequire(import.meta.url));
+import module from "module";
+const require = module.createRequire(import.meta.url);
 var message = require('./proto/message_pb.cjs');
 
 const callback = (output, fn, input) => {
