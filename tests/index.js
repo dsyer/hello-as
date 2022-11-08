@@ -1,5 +1,5 @@
 import assert from "assert";
-import { call } from "../assembly.js";
-var result = await call({message: "Hello"});
-assert.strictEqual(result.msg, "Hello World");
+import { echo } from "../assembly.js";
+var result = echo();
+assert.strictEqual(result, 1234);
 console.log("ok");
