@@ -2,25 +2,19 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.209.6/containers/ubuntu
 {
 	"name": "hello-as",
-	"dockerComposeFile": "docker-compose.yml",
-	"service": "dev",
-	"workspaceFolder": "/workspace",
-
+	"image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 	// Set *default* container specific settings.json values on container create.
 	"settings": {},
-
-
 	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": ["arrterian.nix-env-selector", "ms-vscode.typescript-javascript-grammar", "mhutchie.git-graph"],
-
+	"extensions": [
+		"arrterian.nix-env-selector",
+		"ms-vscode.typescript-javascript-grammar",
+		"mhutchie.git-graph"
+	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	"onCreateCommand": "sudo chown vscode:vscode /home/vscode/.vscode-server/extensions",
-	"postCreateCommand": "sudo setfacl -k /tmp",
-
 	"remoteUser": "vscode",
-
-	"features": {}
+	"features": {
+		"ghcr.io/devcontainers/features/nix:1": {}
+	}
 }
