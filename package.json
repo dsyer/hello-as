@@ -2,6 +2,7 @@
   "type": "module",
   "dependencies": {
     "@msgpack/msgpack": "^2.7.2",
+    "cloudevents": "^6.0.3",
     "google-protobuf": "^3.21.0"
   },
   "devDependencies": {
