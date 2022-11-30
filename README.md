@@ -1,5 +1,5 @@
 ```
-$ npm run asbuild
+$ make
 $ node
 > var is = await import("./assembly.js")
 > await is.call({"payload":"Hello"})

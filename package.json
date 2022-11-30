@@ -5,9 +5,9 @@
     "google-protobuf": "^3.21.0"
   },
   "devDependencies": {
-    "as-proto": "^0.4.0",
-    "as-proto-gen": "^0.4.0",
-    "assemblyscript": "^0.20.13"
+    "as-proto": "^0.9.1",
+    "as-proto-gen": "^0.9.1",
+    "assemblyscript": "^0.24.1"
   },
   "exports": {
     ".": {
