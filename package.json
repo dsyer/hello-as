@@ -1,9 +1,8 @@
 {
   "type": "module",
   "dependencies": {
-    "@msgpack/msgpack": "^2.7.2",
-    "cloudevents": "^6.0.3",
-    "google-protobuf": "^3.21.0"
+    "protobufjs": "^7.1.2",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "as-proto": "^0.9.1",

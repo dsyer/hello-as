@@ -2,8 +2,15 @@
 $ make
 $ node
 > var is = await import("./assembly.js")
-> await is.call({"payload":"Hello"})
-{ payload: 'Hello', headers: { one: 'two' } }
+> await is.call({"data":"Hello"})
+{
+  data: 'Hello',
+  headers: { one: 'two' },
+  id: '708c1aba-54df-45f8-8056-057cd0761f05',
+  source: '/',
+  specVersion: '1.0',
+  type: 'event'
+}
 ```
 
 To explore the memory allocation:
